@@ -12,23 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/**
- * 测试对象
- */
-interface ITest {
-  /** 返回消息 */
-  message: string;
-  now: number;
-}
+import { type CreateAxiosDefaults } from 'axios'
+import { BASE_URL } from '@/config';
 
-/**
- * 权限对象
- */
-interface IAuthority {
-  /** 用户UUID */
-  uuid: string;
-  roleName: string;
-  description: string;
-  updateTime: number;
-  createTime: number;
+const config: CreateAxiosDefaults = {
+  baseURL: BASE_URL,
+  timeout: 5000,
+  headers: {
+    'X-Requested-With': 'XMLHttpRequest',
+    'X-TOKEN': ''
+  },
+  responseType: 'json'
 }
+export default config

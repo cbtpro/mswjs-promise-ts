@@ -43,6 +43,7 @@ import type {
   DatasetComponentOption,
 } from 'echarts/components';
 import type { ComposeOption } from 'echarts/core';
+import { useApi } from '@/api';
 
 // 通过 ComposeOption 来组合出一个只有必须组件和图表的 Option 类型
 type ECOption = ComposeOption<
@@ -76,13 +77,41 @@ interface IData {
   name: string;
   value: number;
 }
+
+const { request } = useApi();
+
+const xAxisData = ref(['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']);
+const yAxisData = ref([0, 0, 0, 0, 0, 0, 0]);
+
+const getEchartsData = () => {
+  return new Promise<IResponseBody<number[]>>((resolve, reject) => {
+    request<number[]>({
+      url: '/index/echarts',
+      method: 'GET',
+    })
+      .then(response => {
+        resolve(response);
+      })
+      .catch(error => {
+        reject(error);
+      });
+  });
+};
+const loadData = async () => {
+  const { data } = await getEchartsData();
+  yAxisData.value = data;
+  refreshChartsData()
+};
+
+loadData();
+
 const chartsCurrentData = ref<IData | undefined>();
 const option: ECOption = {
   title: {
     text: props.title,
   },
   tooltip: {
-    trigger: 'axis',
+    // trigger: 'axis',
     formatter: params => {
       try {
         if (Array.isArray(params)) {
@@ -96,7 +125,7 @@ const option: ECOption = {
       } catch (err) {
         console.log(err);
       }
-      return '1';
+      return '';
     },
   },
   axisPointer: {
@@ -105,7 +134,7 @@ const option: ECOption = {
   },
   xAxis: {
     type: 'category',
-    data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+    data: xAxisData.value,
     triggerEvent: true,
   },
   yAxis: {
@@ -113,7 +142,7 @@ const option: ECOption = {
   },
   series: [
     {
-      data: [820, 932, 901, 934, 1290, 1330, 1320],
+      data: yAxisData.value,
       type: 'line',
       smooth: true,
     },
@@ -156,6 +185,21 @@ const initECharts = () => {
   }
 };
 
+const refreshChartsData = () => {
+  if (myCharts) {
+    myCharts.setOption({
+      xAxis: {
+        data: xAxisData.value,
+      },
+      series: [
+        {
+          data: yAxisData.value,
+        },
+      ],
+    });
+  }
+};
+
 const resizeHandle = useThrottleFn(() => {
   if (myCharts) {
     myCharts.resize();
@@ -164,6 +208,7 @@ const resizeHandle = useThrottleFn(() => {
 const initEvents = () => {
   window.addEventListener('resize', resizeHandle);
 };
+
 onMounted(() => {
   initECharts();
   initEvents();
@@ -185,6 +230,7 @@ onUnmounted(() => {
 
 defineExpose({
   myCharts,
+  refreshChartsData,
 });
 </script>
 

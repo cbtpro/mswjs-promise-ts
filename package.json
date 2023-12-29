@@ -10,7 +10,8 @@
     "prepare": "husky install"
   },
   "dependencies": {
-    "@vueuse/core": "^10.2.1",
+    "@vueuse/core": "^10.7.1",
+    "axios": "^1.6.3",
     "default-passive-events": "^2.0.0",
     "echarts": "^5.4.2",
     "less": "^4.1.3",
@@ -18,9 +19,11 @@
   },
   "devDependencies": {
     "@types/node": "^20.3.3",
-    "@vitejs/plugin-vue": "^4.1.0",
+    "@vitejs/plugin-vue": "^5.0.0",
     "husky": "^8.0.3",
     "lint-staged": "^13.2.3",
+    "mock2js": "^1.0.6",
+    "msw": "^2.0.11",
     "prettier": "2.8.8",
     "typescript": "^5.0.2",
     "vite": "^5.0.10",
@@ -28,5 +31,8 @@
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
+  },
+  "msw": {
+    "workerDirectory": "public"
   }
 }

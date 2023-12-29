@@ -1,6 +1,6 @@
-import { DirectiveBinding, ObjectDirective } from 'vue';
+import { DirectiveBinding, Directive } from 'vue';
 
-export const ResizeObserver: ObjectDirective = {
+export const ResizeObserver: Directive = {
   mounted(el, binding: DirectiveBinding<any>) {
     const handler = binding.value;
 

@@ -1,4 +1,4 @@
-// Copyright 2023 Peter Chen
+// Copyright 2021 cbtpro
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,23 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/**
- * 测试对象
- */
-interface ITest {
-  /** 返回消息 */
-  message: string;
-  now: number;
-}
+import { http, HttpResponse } from 'msw';
+import { builder } from '@/mocks/build';
 
-/**
- * 权限对象
- */
-interface IAuthority {
-  /** 用户UUID */
-  uuid: string;
-  roleName: string;
-  description: string;
-  updateTime: number;
-  createTime: number;
-}
+export const test = http.get(/\/api\/index\/test/, (options, ...rest) => {
+  console.log(options, rest)
+  const url = new window.URL(options.request.url);
+  const params = new window.URLSearchParams(url.search);
+  // 获取请求参数
+  const username = params.get('username')
+  return HttpResponse.json(
+    builder<ITest>({
+      message: `你好，${username}`,
+      now: Date.now(),
+    }),
+  );
+});

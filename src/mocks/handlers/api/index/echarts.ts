@@ -1,4 +1,4 @@
-// Copyright 2021 cbtpro
+// Copyright 2021 peter
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -11,17 +11,11 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+import { http, HttpResponse } from 'msw';
+import { builder } from '@/mocks/build';
 
-import Mock from 'mock2js';
-import { builder } from '@/mock/build';
-
-const response = (options: IMockRequestOptions) => {
-  const { body } = options;
-  const { username } = JSON.parse(body);
-  return builder<ITest>({
-    message: `你好，${username}`,
-    now: Date.now(),
-  });
-};
-
-Mock.mock(/\/api\/index\/test/, 'get', response);
+export const echarts = http.get(/api\/index\/echarts/, () => {
+  return HttpResponse.json(
+    builder<number[]>([820, 932, 901, 934, 1290, 1330, 1320]),
+  );
+});

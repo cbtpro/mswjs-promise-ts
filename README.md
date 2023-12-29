@@ -17,6 +17,7 @@ If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has a
    2. Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
 2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
 
+<<<<<<< HEAD
 ## 待处理问题、拆分 echarts
 
 (!) Some chunks are larger than 500 kB after minification. Consider:
@@ -24,3 +25,38 @@ If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has a
 - Using dynamic import() to code-split the application
 - Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
 - Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+=======
+## mswjs安装
+
+### 安装依赖
+
+npm install msw --save-dev
+
+设置woker目录
+public 和package.json
+npx msw init ./public --save
+
+
+改造main.ts
+
+```js
+
+async function prepareApp() {
+  if (
+    process.env.NODE_ENV === 'development' ||
+    process.env.NODE_ENV === 'test'
+  ) {
+    const { worker } = await import('./mocks/browser')
+    return worker.start()
+  }
+
+  return Promise.resolve()
+}
+
+const app = createApp(App)
+
+prepareApp().then(() => {
+  app.mount('#app')
+})
+```
+>>>>>>> 5acc546 (feat: 支持mswjs)
