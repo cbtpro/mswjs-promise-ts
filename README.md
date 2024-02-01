@@ -25,7 +25,26 @@ npm install msw --save-dev
 
 设置 woker 目录
 public 和 package.json
+
+```shell
 npx msw init ./public --save
+```
+
+这行命令会在 public 目录下生成一个 mockServiceWorker.js 文件来提供 worker 服务来进行接口 mock。
+`--save`会在 package.json 中添加一个配置
+
+```json
+{
+  "name": "vite-vue3-ts-template",
+  "msw": {
+    "workerDirectory": "public"
+  }
+}
+```
+
+## 拷贝 example 中的 mocks 文件夹到工程`src`目录中
+
+`https://github.com/mswjs/examples/tree/main/examples/with-vue/src/mocks`
 
 改造 main.ts
 
@@ -46,10 +65,58 @@ prepareApp().then(() => {
 });
 ```
 
-## 待处理问题、拆分 echarts
+此时启用项目，浏览器控制台已经可以看到 mswjs 启动完成，并给出了警告信息，所有没有被成功拦截都会使用 warn 输出，所有成功拦截的都使用黑体文字输出。
 
-(!) Some chunks are larger than 500 kB after minification. Consider:
+### 常用场景
 
-- Using dynamic import() to code-split the application
-- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
-- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+解析 RESTFul 规范的请求
+
+<https://mswjs.io/docs/network-behavior/rest>
+
+解析 graphql 规范的请求
+
+<hhttps://mswjs.io/docs/network-behavior/graphql>
+
+高阶解释器
+
+<https://mswjs.io/docs/recipes/higher-order-resolver>
+
+延迟返回
+
+<hhttps://mswjs.io/docs/api/delay>
+
+处理 cookies
+
+<hhttps://mswjs.io/docs/recipes/cookies>
+
+从 url 中获取参数
+
+<hhttps://mswjs.io/docs/recipes/query-parameters>
+
+对请求进行代理，修改响应参数
+
+<hhttps://mswjs.io/docs/recipes/response-patching>
+
+透传
+
+<https://mswjs.io/docs/api/passthrough>
+
+模拟流数据
+
+<hhttps://mswjs.io/docs/recipes/streaming>
+
+模拟请求异常情况
+
+<hhttps://mswjs.io/docs/recipes/network-errors>
+
+模拟文件上传
+
+<hhttps://mswjs.io/docs/recipes/file-uploads>
+
+模拟二进制
+
+<hhttps://mswjs.io/docs/recipes/responding-with-binary>
+
+启用 HTTPS
+
+<hhttps://mswjs.io/docs/recipes/using-local-https>
